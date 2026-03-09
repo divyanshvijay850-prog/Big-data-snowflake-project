@@ -44,7 +44,7 @@ CREATE OR REPLACE TABLE customer_final (
     LOAD_YEAR INT,
     LOAD_MONTH INT,
     LOAD_DAY INT,
-    LOAD_DAY_NAME STRING,  -- Naya Column
+    LOAD_DAY_NAME STRING, 
     LOAD_QUARTER INT,
     -- Metadata
     RECORD_HASH STRING, 
@@ -99,7 +99,7 @@ USING (
         WHERE NOT EXISTS (
          SELECT 1 FROM SNOW_PROJECT.PIPE_SCHEMA.CUSTOMER_FINAL f 
             WHERE f.CUSTOMER_ID = s.raw_content:CUSTOMER_ID::STRING 
-            AND f.RECORD_HASH = HASH(s.raw_content:CUSTOMER_NAME, s.raw_content:EMAIL_ID,      s.raw_content:PHONE_NUMBER, 
+            AND f.RECORD_HASH = HASH(s.raw_content:CUSTOMER_NAME, s.raw_content:EMAIL_ID,  s.raw_content:PHONE_NUMBER, 
             s.raw_content:CITY, s.raw_content:STATE, s.raw_content:COUNTRY, s.raw_content:CUSTOMER_SEGMENT)::STRING
             AND f.IS_CURRENT = TRUE
         )
@@ -158,7 +158,7 @@ CREATE OR REPLACE TABLE GOLD_SCHEMA.FACT_CUSTOMER_METRICS_GOLD (
     CUSTOMER_ID STRING,
     CREDIT_RATING STRING,
     RATING_SCORE INT,
-    LOAD_YEAR INT, -- Fact table mein bhi year hona accha hota h trend ke liye
+    LOAD_YEAR INT, 
     RECORD_START_DATE TIMESTAMP_NTZ
 );
 
@@ -174,7 +174,7 @@ CREATE OR REPLACE TABLE GOLD_SCHEMA.DM_CUSTOMER_FULL_DETAILS (
     CUSTOMER_SEGMENT STRING,
     CUSTOMER_STATUS STRING,
     CREDIT_RATING STRING,
-    RATING_SCORE INT,          -- Fact column
+    RATING_SCORE INT,          
     SOURCE_SYSTEM STRING,
     FILE_NAME STRING,
     LOAD_YEAR INT,
@@ -251,9 +251,9 @@ SHOW TASKS IN SCHEMA SNOW_PROJECT.PIPE_SCHEMA;
 -- Verification
 SELECT * FROM GOLD_SCHEMA.DIM_CUSTOMER_GOLD;
 
-select * from GOLD_SCHEMA.FACT_CUSTOMER_METRICS_GOLD;  -- fact table(numeric data only)
-SELECT * FROM GOLD_SCHEMA.DIM_CUSTOMER_GOLD;  -- dimensional table(descriptive data only)
-SELECT * FROM GOLD_SCHEMA.DM_CUSTOMER_FULL_DETAILS; -- fact and dimensional table data(all data is here)
+select * from GOLD_SCHEMA.FACT_CUSTOMER_METRICS_GOLD;  
+SELECT * FROM GOLD_SCHEMA.DIM_CUSTOMER_GOLD;  
+SELECT * FROM GOLD_SCHEMA.DM_CUSTOMER_FULL_DETAILS; 
 
 
 
